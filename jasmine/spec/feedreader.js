@@ -33,6 +33,7 @@ $(function() {
          */
          it('has URLs for all feeds', function() {
             for (var i = 0; i < allFeeds.length; ++i) {
+                expect(allFeeds[i].url).toBeDefined;
                 expect(allFeeds[i].url.length).not.toBe(0);
             }
          });
@@ -44,6 +45,7 @@ $(function() {
          */
          it('has names for all feeds', function() {
             for (var i = 0; i < allFeeds.length; ++i) {
+                expect(allFeeds[i].name).toBeDefined;
                 expect(allFeeds[i].name.length).not.toBe(0);
             }
          });
@@ -85,16 +87,12 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
+            loadFeed(0, done);
          });
 
-         it('should have at least one element', function(done) {
+         it('should have at least one element', function() {
             var feedContainer = $('.feed');
             expect(feedContainer.find('.entry').length).toBeGreaterThan(0);
-            done();
-
          });
     });
 
@@ -118,18 +116,7 @@ $(function() {
          it('should load a new feed', function(done) {
             loadFeed(1, function() {
                 newEntries = feedContainer.find('.entry');
-                done();
-            });
-            expect(1).toBe(1); // gets rid of the 'has no expectations' warning
-         });
-
-         it('should change content when a new feed is loaded', function() {
-            expect(oldEntries[0].innerHTML).not.toBe(newEntries[0].innerHTML);
-         });
-
-         // Reset the page
-         afterAll(function(done) {
-            loadFeed(0, function() {
+                expect(oldEntries[0].innerHTML).not.toBe(newEntries[0].innerHTML);
                 done();
             });
          });

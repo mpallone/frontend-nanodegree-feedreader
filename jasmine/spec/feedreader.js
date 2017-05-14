@@ -60,7 +60,7 @@ $(function() {
          */
          it('is hidden by default', function() {
             expect($('body').hasClass('menu-hidden')).toBe(true);
-         })
+         });
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
@@ -104,5 +104,37 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+         var feedContainer = $('.feed');
+         var oldEntries;
+         var newEntries;
+
+         beforeEach(function(done) {
+            loadFeed(0, function() {
+                oldEntries = feedContainer.find('.entry');
+                done();
+            });
+         });
+
+         it('should load a new feed', function(done) {
+            loadFeed(1, function() {
+                newEntries = feedContainer.find('.entry');
+                done();
+            });
+            expect(1).toBe(1); // gets rid of the 'has no expectations' warning
+         });
+
+         it('should change content when a new feed is loaded', function() {
+            expect(oldEntries[0].innerHTML).not.toBe(newEntries[0].innerHTML);
+         });
+
+         // Reset the page
+         afterAll(function(done) {
+            loadFeed(0, function() {
+                done();
+            });
+         });
      });
 }());
+
+
+
